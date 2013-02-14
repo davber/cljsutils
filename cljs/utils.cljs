@@ -1,8 +1,7 @@
-(comment **compiler** :target :js :language :clojurescript :macros [umacros])
-
 (ns utils
   (:require [clojure.string :as string]
-            [clojure.walk :as walk]
+            [clojure.walk :as walk])
+  (:require-macros
             [macros.utils :as umacros]))
 
 (declare wordify cljify jsify)
