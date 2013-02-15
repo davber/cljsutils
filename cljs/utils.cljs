@@ -1,4 +1,5 @@
 (ns utils
+  (:refer-clojure :exclude [clj->js])
   (:require [clojure.string :as string]
             [clojure.walk :as walk])
   (:require-macros
