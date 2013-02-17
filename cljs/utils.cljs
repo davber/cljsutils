@@ -7,7 +7,7 @@
 
 (declare wordify cljify jsify)
 
-(defn ^:export camelize
+(defn camelize
   "Camelize a string - or a symbol or keyword - by replacing dashes and underscores with word
  boundaries. It will always generate a string.
  There is an optional parameter indicating whether the first letter
@@ -18,19 +18,19 @@
         cap-rest (map string/capitalize rest)]
     (string/join (cons cap-first cap-rest))))
 
-(defn ^:export hyphenize
+(defn hyphenize
   "Hyphenizes a string by dividing it into lower-case words and joining with a
  hyphen. It supports symbols as well."
   [lexeme]
   (string/join "-" (wordify lexeme)))
 
 ;; TODO: put this definition in one place instead of duplicating it
-(defn ^:export wordify
+(defn wordify
   "Splits a string or symbol into a sequence of lower-case words"
   [lexeme]
   (string/split (name lexeme) #"[_-]"))
 
-(defn ^:export log
+(defn log
   "Log using the JS console or trace. The first argument is the log level."
   [level & msgs]
   (let [info (apply str `(~level ": " ~@msgs))]
@@ -61,19 +61,19 @@
     :else x))
 
 
-(defn ^:export jsify [value]
+(defn jsify [value]
   ;; (print (str "utils/jsify of value " value))
   (let [jsobj (clj->js (walk/stringify-keys value))]
     ;; (.log js/console jsobj)
     jsobj))
 
-(defn ^:export cljify [value]
+(defn cljify [value]
   ;; (print (str "utils/jcljify of value " value))
   (-> value js->clj walk/keywordize-keys))
 
 ;; The following UUID generator is from
 ;; http://catamorphic.wordpress.com/2012/03/02/generating-a-random-uuid-in-clojurescript/
-(defn ^:export uuid
+(defn uuid
   "returns a type 4 random UUID: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
   []
   (let [r (repeatedly 30 (fn [] (.toString (rand-int 16) 16)))]
