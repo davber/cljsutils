@@ -37,8 +37,7 @@
     (umacros/if-catch true (.log js/console info))))
 
 (defn- jsify-outer [value]
-  (cond (seq? value) (do (print (str "jsify-outer with seq " value))
-                       (apply array value))
+  (cond (seq? value) (apply array value)
         (map? value)
         (let [jsobj (js-obj)]
           (doseq [[k v] value]
@@ -55,20 +54,20 @@
   (cond
     (string? x) x
     (keyword? x) (name x)
-    (map? x) (.-strobj (reduce (fn [m [k v]]
-               (assoc m (clj->js k) (clj->js v))) {} x))
+    (map? x)
+      (let [js-map (js-obj)]
+        (doseq [[k v] x]
+          (aset js-map (clj->js k) (clj->js v)))
+        js-map)
     (coll? x) (apply array (map clj->js x))
     :else x))
 
 
 (defn jsify [value]
-  ;; (print (str "utils/jsify of value " value))
   (let [jsobj (clj->js (walk/stringify-keys value))]
-    ;; (.log js/console jsobj)
     jsobj))
 
 (defn cljify [value]
-  ;; (print (str "utils/jcljify of value " value))
   (-> value js->clj walk/keywordize-keys))
 
 ;; The following UUID generator is from
