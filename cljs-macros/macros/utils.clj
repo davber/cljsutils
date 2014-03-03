@@ -56,9 +56,9 @@
 transforming it from a JS data structure to a regular
 Clojure structure, if needed."
   [json-str & {:keys [use-keys]}]
-  (let [obj `(~'utils/cljify (.parse (? JSON) ~json-str))]
+  (let [obj `(~'utils/cljify (.parse js/JSON ~json-str))]
     (if use-keys `(walk/keywordize-keys ~obj) `~obj)))
 
 (defmacro output-json
   [obj]
-  `(.stringify (? JSON) (~'utils/jsify ~obj)))
+  `(.stringify js/JSON (~'utils/jsify ~obj)))
